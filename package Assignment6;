@@ -1,0 +1,324 @@
+package Assignment6;
+
+public class Pet {
+	private String petName;
+	private String ownerName;
+	private String color;
+	protected int sex;
+
+	static final int MALE = 0;
+	static final int FEMALE = 1;
+	static final int SPAYED = 2;
+	static final int NEUTERED = 3;
+	
+	public Pet (String name, String ownerName, String color){
+		this.petName = name;
+		this.ownerName = ownerName;
+		this.color = color;
+	} 
+	public String getPetName(){
+		 return petName;
+	} 
+	
+	public String getOwnerName(){
+		return ownerName;
+	} 
+	
+
+	public String getColor(){
+		return color;
+	} 
+	
+	public void setSex(int sexid){
+		this.sex = sexid;
+	} 
+	// Should return the string equivalent of the gender, e.g the string “MALE” etc. 
+	public String getSex(){
+		if (this.sex == 0){
+			return "MALE";
+			}
+		else if (this.sex == 1){
+		return "FEMALE";
+		    }
+		else if (this.sex == 2){
+			return "SPAYED";
+			}
+		else if (this.sex == 3){
+			return "NEUTERED";
+		}
+		return null;
+		
+	} 
+	// Should return the name, owner’s name, age, color, and gender (use getSex());
+    //	Spot owned by Mary 
+    //	Color: Black and White 
+    //	Sex: Male 
+
+	public String toString(){
+		String res = "";
+		res = this.petName + " owned by " + this.ownerName + "\n" 
+		+ "Color: " + this.color + "\n" + "Sex: " + this.getSex();
+		
+		return res;
+	}
+	
+	public static void main(String[] args){
+		Pet p = new Pet("Spot","Mary","Black and White");
+		p.setSex(0);
+		p.getSex();
+		p.toString();
+		
+	}
+
+
+}
+
+package Assignment6;
+import java.util.*;
+
+public class Cat extends Pet implements Boardable {
+	private String hairLength;
+	private Date startDate;
+	private Date endDate;
+
+	public Cat(String name, String ownerName, String color, String hairLength) {
+		super(name, ownerName, color);
+		this.hairLength = hairLength;
+	}
+	public String getHairLength(){
+		return hairLength;
+	}
+	/* method that returns a String that identifies the pet as Cat 
+	 * and returns a complete description of the cat,
+	 *  including the values stored in the Pet parent class.
+	 *  CAT: 
+        Tom owned by Bob 
+        Color: black 
+        Sex: spayed 
+        Hair: short 
+    */ 
+
+	public String toString(){
+		String res = "";
+		res = "CAT:" + "\n" + super.getPetName() + " owned by " + super.getOwnerName() +
+				"\n" + "Color: " + super.getColor() + "\n" + "Sex: " + super.getSex().toLowerCase() +
+				"\n" + "Hair: " + this.hairLength;
+		System.out.println(res);
+		return res;	
+	}
+	
+	@Override
+	   public void setBoardStart (int month, int day, int year)throws wrongInputException{
+        if (month < 1 || month > 12 || day < 1 || day > 31 || year > 9999) {
+            throw new wrongInputException();
+        } else {
+             startDate = new Date(month, day, year);
+        }
+    }
+	@Override
+	   public void setBoardEnd(int month, int day, int year)throws wrongInputException{
+     if (month < 1 || month > 12 || day < 1 || day > 31 || year > 9999) {
+         throw new wrongInputException();
+     } else {
+         endDate = new Date(month, day, year);
+     }
+ }
+
+    public boolean boarding(int month, int day, int year)throws wrongInputException{
+        if (month < 1 || month > 12 || day < 1 || day > 31 || year > 9999) {
+            throw new wrongInputException();
+        } else {
+            Date date = new Date(month, day, year);
+       if (date.getMonth() >= startDate.getMonth() && date.getDay() >= startDate.getDay()
+           && date.getYear() >= startDate.getYear() && date.getMonth() <= endDate.getMonth()
+           && date.getDay() <= endDate.getDay() && date.getYear() <= endDate.getYear()){
+            	System.out.println("true");
+            	return true;
+            }
+       else{
+            System.out.println("false");
+            return false;
+        }
+        }
+    }
+
+
+	public static void main(String[] args) {
+		Cat p = new Cat("Tom","Bob","black", "short");
+		p.setSex(2);
+		p.getSex();
+		p.toString();
+	    try {
+			p.setBoardStart(1,1, 1990);
+		} catch (wrongInputException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    try {
+			p.setBoardEnd(2, 1, 1991);
+		} catch (wrongInputException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    
+		try {
+			p.boarding(1,31,1990);
+		} catch (wrongInputException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+}
+
+
+package Assignment6;
+import java.util.*;
+
+public class Dog extends Pet implements Boardable {
+	private String size;
+	private Date startDate;
+	private Date endDate;
+
+	public Dog(String name, String ownerName, String color, String size) {
+		super(name, ownerName, color);
+		this.size = size;
+	}
+    public String getSize() {
+        return size;
+    }
+
+	public String toString(){
+		String res = "";
+		res = "DOG:" + "\n" + super.getPetName() + " owned by " + super.getOwnerName() +
+				"\n" + "Color: " + super.getColor() + "\n" + "Sex: " + super.getSex().toLowerCase()
+				+ "\n" + "Size: " + this.size;
+		System.out.println(res);
+		return res;	
+	}
+	@Override
+	public void setBoardStart(int month, int day, int year) throws wrongInputException {
+		if (month < 1 || month > 12 || day < 1 || day > 31 || year > 9999 || year < 1000){
+			throw new wrongInputException();
+		}
+		else{
+			startDate = new Date(month, day, year);
+		}
+
+	}
+
+	@Override
+	public void setBoardEnd(int month, int day, int year) throws wrongInputException {
+		if (month < 1 || month > 12 || day < 1 || day > 31 || year > 9999 || year < 1000){
+			throw new wrongInputException();
+		}
+		else{
+			endDate = new Date(month, day, year);
+		}
+
+	}
+
+	@Override
+	   public boolean boarding(int month, int day, int year)throws wrongInputException{
+        if (month < 1 || month > 12 || day < 1 || day > 31 || year > 9999) {
+            throw new wrongInputException();
+        } else {
+            Date date = new Date(month, day, year);
+       if (date.getMonth() >= startDate.getMonth() && date.getDay() >= startDate.getDay()
+           && date.getYear() >= startDate.getYear() && date.getMonth() <= endDate.getMonth()
+           && date.getDay() <= endDate.getDay() && date.getYear() <= endDate.getYear()){
+            	System.out.println("true");
+            	return true;
+            }
+       else{
+            System.out.println("false");
+            return false;
+        }
+        }
+
+	}
+	public static void main(String[] args) {
+		Dog p = new Dog("Spot","Susan","white", "medium");
+		p.setSex(2);
+		p.getSize();
+		p.toString();
+	    try {
+			p.setBoardStart(1,1, 1990);
+		} catch (wrongInputException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    try {
+			p.setBoardEnd(2, 1, 1991);
+		} catch (wrongInputException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    
+		try {
+			p.boarding(1,31,1990);
+		} catch (wrongInputException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+package Assignment6;
+
+public interface Boardable {
+    public void setBoardStart (int month, int day, int year)throws wrongInputException;
+    public void setBoardEnd(int month, int day, int year) throws wrongInputException;
+    public boolean boarding(int month, int day, int year) throws wrongInputException;
+}
+class wrongInputException extends Exception {
+
+	
+}
+
+
+package Assignment6;
+import java.util.*;
+
+public class AnimalHospital {
+    private List<Pet> animalList;
+
+    public AnimalHospital(String inputFile) {
+        animalList = new ArrayList<Pet>();
+    }
+
+    public void printPetInfoByName(String name) {
+        for (Pet pet: animalList) {
+            if (pet.getPetName().trim().equals(name.trim())) {
+                System.out.println(pet.toString());
+            }
+        }
+    }
+
+    public void printPetInforByOwner(String name) {
+        for (Pet pet: animalList) {
+            if (pet.getOwnerName().trim().equals(name.trim())) {
+                System.out.println(pet.toString());
+            }
+        }
+    }
+
+    public void printPetBoarding(int month, int day, int year) {
+        try{
+            for (Pet pet: animalList) {
+                if (pet.getClass().getName().toLowerCase().equals("cat")) {
+                    if (((Cat)pet).boarding(month, day, year)) {
+                        System.out.println(((Cat)pet).toString());
+                    }
+                } else if (pet.getClass().getName().toLowerCase().equals("dog")) {
+                    if (((Dog) pet).boarding(month, day, year)) {
+                        System.out.println(((Dog)pet).toString());
+                    }
+                }
+            }
+        } catch (wrongInputException ie) {
+            System.out.println("Wrong input!");
+        }
+    }
+
+}
